@@ -14,5 +14,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+
+        #$this->call(SingerSeed::class);
+        $this->call(UserSeeder::class);
+        #$this->call(ElectionLogSeeder::class);
+        #$this->call(ElectionOptionsSeeder::class);
+
     }
 }

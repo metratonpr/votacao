@@ -7,6 +7,7 @@ use App\Models\Singer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ElectionRequest;
 use App\Models\Vote;
 
 class ElectionController extends Controller
@@ -41,11 +42,11 @@ class ElectionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ElectionRequest $request)
     {
         //
         $data = $request->all();
-
+        dd($data);
 
         if($request->hasFile('image') && $request->file('image')->isValid()){
              $file = $request->file('image');
@@ -56,6 +57,12 @@ class ElectionController extends Controller
             $data['isOpen'] = true;
         } else{
             $data['isOpen'] = false;
+        }
+
+        if(isset($data['view'])){
+            $data['view'] = true;
+        } else{
+            $data['view'] = false;
         }
 
         if(!isset($data['votes'])){
@@ -120,7 +127,7 @@ class ElectionController extends Controller
      * @param  \App\Models\Election  $election
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ElectionRequest $request, $id)
     {
         $data = $request->all();
         $election = Election::find($id);
@@ -137,6 +144,12 @@ class ElectionController extends Controller
             $data['isOpen'] = true;
         } else{
             $data['isOpen'] = false;
+        }
+
+        if(isset($data['view'])){
+            $data['view'] = true;
+        } else{
+            $data['view'] = false;
         }
 
         if(!isset($data['votes'])){

@@ -11,7 +11,6 @@
             @foreach ($elections as $election)
             <br>
                 <img src="{{asset('storage/'.$election->image)}}" alt="" class="img-fluid">
-
             <br>
             <h2>{{ $election->name }}</h2>
                     @foreach ($election->singers as $singer)
@@ -23,6 +22,7 @@
                             <div class="card-body">
                             <h5 class="card-title">{{ $singer->fullName }}</h5>
                             <p class="card-text">{{ $singer->description }}</p>
+                            @if ($election->isOpen)
                             <form action="{{route('votar')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="election" id="election" value="{{ $election->id }}">
@@ -33,6 +33,10 @@
                                    <button class="btn btn-sm btn-success ml-2">Votar</button>
                                 @endif
                             </form>
+                            @else
+                                <span>Voce poderá votar em breve!</span>
+                            @endif
+
                             </div>
                         </div>
                     </div>

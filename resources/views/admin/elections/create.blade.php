@@ -19,6 +19,7 @@
     <div class="form-group">
         <label for="">Descrição</label>
         <textarea name="description" id="" cols="30" rows="10" class="form-control @error('description') is-invalid @enderror">{{old('description')}}</textarea>
+
         @error('description')
             <div class="invalid-feedback">
                 {{$message}}
@@ -28,11 +29,17 @@
 
     <div class="form-group">
         <label for="">Artistas</label>
-        <select name="singers[]" id="" class="form-control" multiple>
+        <select name="singers[]" id="" class="form-control  @error('singers') is-invalid @enderror" multiple>
             @foreach ($singers as $singer)
                 <option value="{{$singer->id}}">{{$singer->fullName}}</option>
             @endforeach
         </select>
+        <br/>
+        @error('singers')
+            <div class="invalid-feedback">
+                {{$message}}
+            </div>
+        @enderror
 
     </div>
 
@@ -70,11 +77,15 @@
         <input type="checkbox" class="form-check-input" id="isOpen" name="isOpen" >
         <label class="form-check-label" for="isOpen">Votação esta ativa?</label>
     </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="view" name="view" >
+        <label class="form-check-label" for="view">Mostra na tela Inicial?</label>
+    </div>
 
     <div class="form-group">
         <label for="">Votos Totais</label>
-        <input type="number" name="votes" disabled class="form-control @error('name') is-invalid @enderror" value="{{old('name')}}">
-        @error('name')
+        <input type="number" name="votes" disabled class="form-control @error('votes') is-invalid @enderror" value="{{old('votes')}}">
+        @error('votes')
             <div class="invalid-feedback">
                 {{$message}}
             </div>

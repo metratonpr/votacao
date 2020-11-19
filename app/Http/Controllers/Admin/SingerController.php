@@ -6,6 +6,7 @@ use App\Models\Singer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SingerRequest;
 
 class SingerController extends Controller
 {
@@ -41,7 +42,7 @@ class SingerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SingerRequest $request)
     {
         $data = $request->all();
         if($request->hasFile('image') && $request->file('image')->isValid()){
@@ -83,7 +84,7 @@ class SingerController extends Controller
      * @param  \App\Models\Singer  $singer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SingerRequest $request, $id)
     {
 
         $data = $request->all();

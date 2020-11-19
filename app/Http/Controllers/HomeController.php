@@ -33,7 +33,7 @@ class HomeController extends Controller
                  ->whereColumn('votes.election_id', 'elections.id')
                  ->limit(1);
            }
-        ])->where('isOpen', 1)->get();
+        ])->where('view',1)->get();
 
         return view('home',compact('elections'));
     }

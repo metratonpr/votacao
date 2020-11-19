@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\ElectionController;
 use App\Http\Controllers\Admin\SingerController;
 use App\Http\Controllers\Admin\VoteController;
 use App\Http\Controllers\HomeController;
+use App\Models\Election;
+use App\Models\Vote;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Auth::routes();
+Auth::routes(['register' => false, 'reset' => false]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -30,4 +32,5 @@ Route::get('/obrigado', [HomeController::class, 'obrigado'])->name('obrigado');
 Route::resource('singers', SingerController::class)->middleware('auth');
 Route::resource('elections', ElectionController::class)->middleware('auth');
 Route::resource('votes', VoteController::class)->middleware('auth');
+
 

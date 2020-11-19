@@ -40,7 +40,9 @@
 
 
 </table>
-{{ $votes->links() }}
+<div class="d-flex justify-content-center">
+    {!! $votes->links('pagination::bootstrap-4') !!}
+</div>
 @endisset
 
 @endsection

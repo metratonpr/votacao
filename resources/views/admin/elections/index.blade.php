@@ -16,8 +16,8 @@
             <th>Inicia Em:</th>
             <th>Termina Em:</th>
             <th>Esta aberta:</th>
+            <th>Tela Inicial:</th>
             <th>Total de Votos:</th>
-            <th>Image:</th>
             <th>Ações</th>
         </tr>
 <tbody>
@@ -33,8 +33,12 @@
         @else
             <td>Encerrado</td>
         @endif
+        @if ($c->view == 1)
+            <td>Mostrar</td>
+        @else
+            <td>Não Mostrar</td>
+        @endif
         <td>{{$c->votes}}</td>
-        <td>{{$c->image}}</td>
         <td>
             <div class="btn-group">
                 <a href="{{route('elections.edit',['election'=> $c->id])}}" class="btn btn-sm btn-primary">Editar</a>
@@ -51,7 +55,9 @@
     @endforeach
 </tbody>
 </table>
-{{ $elections->links() }}
+<div class="d-flex justify-content-center">
+    {!! $elections->links('pagination::bootstrap-4') !!}
+</div>
 @endisset
 
 @endsection

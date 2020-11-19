@@ -33,7 +33,7 @@ class Election extends Model
         return 'slug';
     }
 
-    protected $fillable = ['name', 'description','starts_in','ends_in','slug','image','isOpen','votes'];
+    protected $fillable = ['name', 'description','starts_in','ends_in','slug','image','isOpen','votes','view'];
 
     public function singers(){
         return $this->belongsToMany(Singer::class);
