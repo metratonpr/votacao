@@ -21,7 +21,7 @@ class ElectionController extends Controller
     {
         //
         $elections = Election::paginate(25);;
-        return view('admin.elections.index',compact('elections'));
+        return view('admin.elections.index', compact('elections'));
     }
 
     /**
@@ -32,8 +32,8 @@ class ElectionController extends Controller
     public function create()
     {
         //
-        $singers = Singer::all(['id','fullName']);
-        return view('admin.elections.create',compact('singers'));
+        $singers = Singer::all(['id', 'fullName']);
+        return view('admin.elections.create', compact('singers'));
     }
 
     /**
@@ -46,26 +46,25 @@ class ElectionController extends Controller
     {
         //
         $data = $request->all();
-        dd($data);
 
-        if($request->hasFile('image') && $request->file('image')->isValid()){
-             $file = $request->file('image');
-            $data['image'] = $file->store('image','public');
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $file = $request->file('image');
+            $data['image'] = $file->store('image', 'public');
         }
 
-        if(isset($data['isOpen'])){
+        if (isset($data['isOpen'])) {
             $data['isOpen'] = true;
-        } else{
+        } else {
             $data['isOpen'] = false;
         }
 
-        if(isset($data['view'])){
+        if (isset($data['view'])) {
             $data['view'] = true;
-        } else{
+        } else {
             $data['view'] = false;
         }
 
-        if(!isset($data['votes'])){
+        if (!isset($data['votes'])) {
             $data['votes'] = 0;
         }
 
@@ -73,7 +72,7 @@ class ElectionController extends Controller
         $election->singers()->sync($data['singers']);
 
         flash('Votação criada com Sucesso!')->success();
-	    return redirect()->route('elections.index');
+        return redirect()->route('elections.index');
     }
 
     /**
@@ -94,16 +93,16 @@ class ElectionController extends Controller
 
         $vencedor = null;
 
-        foreach($singers as $singer){
-            $vote = Vote::where('singer_id',$singer->id)->count();
+        foreach ($singers as $singer) {
+            $vote = Vote::where('singer_id', $singer->id)->count();
             $ar = [$singer->fullName, $vote];
-            array_push($votes,$ar);
-            if($vote > $maior){
+            array_push($votes, $ar);
+            if ($vote > $maior) {
                 $maior = $vote;
                 $vencedor = $singer;
             }
         }
-        return view('admin.elections.result',compact(['votes','election','vencedor']));
+        return view('admin.elections.result', compact(['votes', 'election', 'vencedor']));
     }
 
     /**
@@ -115,9 +114,9 @@ class ElectionController extends Controller
     public function edit($id)
     {
 
-        $singers = Singer::all(['id','fullName']);
+        $singers = Singer::all(['id', 'fullName']);
         $election = Election::find($id);
-        return view('admin.elections.edit',compact(['election','singers']));
+        return view('admin.elections.edit', compact(['election', 'singers']));
     }
 
     /**
@@ -132,30 +131,30 @@ class ElectionController extends Controller
         $data = $request->all();
         $election = Election::find($id);
 
-        if($request->hasFile('image')){
-            if(Storage::disk('public')->exists($election->image)){
+        if ($request->hasFile('image')) {
+            if (Storage::disk('public')->exists($election->image)) {
                 Storage::disk('public')->delete($election->image);
             }
             $file = $request->file('image');
-            $data['image'] = $file->store('image','public');
+            $data['image'] = $file->store('image', 'public');
         }
 
-        if(isset($data['isOpen'])){
+        if (isset($data['isOpen'])) {
             $data['isOpen'] = true;
-        } else{
+        } else {
             $data['isOpen'] = false;
         }
 
-        if(isset($data['view'])){
+        if (isset($data['view'])) {
             $data['view'] = true;
-        } else{
+        } else {
             $data['view'] = false;
         }
 
-        if(!isset($data['votes'])){
+        if (!isset($data['votes'])) {
             $data['votes'] = 0;
         }
-        $election ->update($data);
+        $election->update($data);
         $election->singers()->sync($data['singers']);
         flash('Votação Atualizada com Sucesso!')->success();
         return redirect()->route('elections.index');
@@ -171,9 +170,9 @@ class ElectionController extends Controller
     {
         $election = Election::find($id);
 
-        if(isset($election)){
+        if (isset($election)) {
             $photoName = $election->image;
-            if(Storage::disk('public')->exists($photoName)){
+            if (Storage::disk('public')->exists($photoName)) {
                 Storage::disk('public')->delete($photoName);
             }
             $election->delete();
@@ -182,5 +181,4 @@ class ElectionController extends Controller
         flash('Votação Removida com Sucesso!')->success();
         return redirect()->route('elections.index');
     }
-
 }

@@ -23,22 +23,28 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $clientIp = $request->ip();
+        #$clientIp = $request->ip();
+
+        $token = $request->cookie('XSRF-TOKEN');
+
+        #$ips = Vote::where('ip', $clientIp)->count();
 
         $elections = Election::addSelect([
-           'ip_already_voted' => function($query) use ($clientIp) {
-               $query->selectRaw('1')
-                 ->from('votes')
-                 ->where('votes.ip', $clientIp)
-                 ->whereColumn('votes.election_id', 'elections.id')
-                 ->limit(1);
-           }
-        ])->where('view',1)->get();
+            'ip_already_voted' => function ($query) use ($token) {
+                $query->selectRaw('1')
+                    ->from('votes')
+                    ->where('votes.computerName', $token)
+                    ->whereColumn('votes.election_id', 'elections.id')
+                    ->limit(1);
+            }
 
-        return view('home',compact('elections'));
+        ])->where('view', 1)->get();
+
+        return view('home', compact('elections'));
     }
 
-    public function votar(Request $request) {
+    public function votar(Request $request)
+    {
 
         $data = $request->all();
 
@@ -48,15 +54,16 @@ class HomeController extends Controller
 
         // Se estiver no form eu posso editar o IP no HTML e votar quantas vezes eu quiser
         $clientIp = $request->ip();
+        $computerName = $request->cookie('XSRF-TOKEN');
 
         // Validação se já votou
-        $alreadyVoted = Vote::where('election_id', $election->id)->where('ip', $clientIp)->exists();
+        $alreadyVoted = Vote::where('election_id', $election->id)->where('ip', $clientIp)->where('computerName', $clientIp)->exists();
 
-        if(isset($election) && isset($singer) && $election->isOpen && !$alreadyVoted){
+        if (isset($election) && isset($singer) && $election->isOpen && !$alreadyVoted) {
             $electionName = $election->name;
             $electionId = $election->id;
             $singerId = $singer->id;
-            $data['computerName'] = $data['_token'];
+            $data['computerName'] = $computerName;
 
             $now = new DateTime();
             $now = $now->getTimestamp();
@@ -67,46 +74,41 @@ class HomeController extends Controller
 
             $dat = [$inicio, $fim, $now];
 
-            $vote = Vote::where([['computerName','=',$data['computerName']],["election_id",'=',$electionId]])->first();
+            $vote = Vote::where([['computerName', '=', $data['computerName']], ["election_id", '=', $electionId]])->first();
 
-            $ips = Vote::where([['ip','=',$clientIp],["election_id",'=',$electionId]])->count();
+            $ips = Vote::where([['ip', '=', $clientIp], ["election_id", '=', $electionId]])->count();
 
-            if(!isset($vote) && $now >= $inicio && $now <= $fim && $ips <= 3){
+            if (!isset($vote) && $now >= $inicio && $now <= $fim && $ips < 5) {
                 $vote = new Vote();
                 $vote->election_id = $electionId;
                 $vote->singer_id = $singerId;
                 $vote->ip = $clientIp;
                 $vote->computerName = $data['computerName'];
                 $vote->save();
-
-
-                $votesTotal = Vote::where("election_id",'=',$electionId)->count();
+                $votesTotal = Vote::where("election_id", '=', $electionId)->count();
                 $election->votes = $votesTotal;
                 $election->save();
-
-
             }
         }
 
         return redirect()->route('obrigado');
-
-
-
     }
 
-    public function possuiCokie($electionName){
+    public function possuiCokie($electionName)
+    {
         $cookie = Cookie::get($electionName);
 
         dd($cookie);
 
-        if(isset($cookie)){
+        if (isset($cookie)) {
             return True;
-        } else{
+        } else {
             return False;
         }
     }
 
-    public function obrigado(){
+    public function obrigado()
+    {
         return view('admin.votes.obrigado');
     }
 }

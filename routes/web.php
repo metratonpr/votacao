@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ElectionController;
 use App\Http\Controllers\Admin\SingerController;
 use App\Http\Controllers\Admin\VoteController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Sandbox;
 use App\Models\Election;
 use App\Models\Vote;
 use Illuminate\Support\Facades\Auth;
@@ -32,5 +33,7 @@ Route::get('/obrigado', [HomeController::class, 'obrigado'])->name('obrigado');
 Route::resource('singers', SingerController::class)->middleware('auth');
 Route::resource('elections', ElectionController::class)->middleware('auth');
 Route::resource('votes', VoteController::class)->middleware('auth');
+
+Route::resource('sandbox', Sandbox::class);
 
 
