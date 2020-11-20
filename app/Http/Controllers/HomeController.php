@@ -23,11 +23,11 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        #$clientIp = $request->ip();
+        $clientIp = $request->ip();
 
         $token = $request->cookie('XSRF-TOKEN');
 
-        #$ips = Vote::where('ip', $clientIp)->count();
+        $ips = Vote::where('ip', $clientIp)->count();
 
         $elections = Election::addSelect([
             'ip_already_voted' => function ($query) use ($token) {
@@ -40,7 +40,7 @@ class HomeController extends Controller
 
         ])->where('view', 1)->get();
 
-        return view('home', compact('elections'));
+        return view('home', compact(['elections',$ips]));
     }
 
     public function votar(Request $request)

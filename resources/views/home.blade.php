@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <div class="">
         @isset($elections)
@@ -8,11 +9,21 @@
         <br>
 
         <div class="container-fluid">
+
             @foreach ($elections as $election)
             <br>
                 <img src="{{asset('storage/'.$election->image)}}" alt="" class="img-fluid">
             <br>
+
+            @php
+                $ip = $_SERVER["REMOTE_ADDR"];
+                $votos = App\Models\Vote::where('ip',$ip)->where('election_id',$election->id)->count();
+                $mostrar = $votos < 5;
+            @endphp
+
+
             <h2>{{ $election->name }}</h2>
+
                     @foreach ($election->singers as $singer)
                     <div class="col-md-4">
                         <div class="card" style="width: 18rem;">
@@ -27,7 +38,9 @@
                                 @csrf
                                 <input type="hidden" name="election" id="election" value="{{ $election->id }}">
                                 <input type="hidden" name="singer" id="singer" value="{{ $singer->id }}">
-                                @if(!!$election->ip_already_voted)
+
+
+                                @if(!!$election->ip_already_voted &&  $mostrar)
                                    <span>Voce já participou dessa votação</span>
                                 @else
                                    <button class="btn btn-sm btn-success ml-2">Votar</button>

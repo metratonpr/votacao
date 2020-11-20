@@ -20,7 +20,7 @@ class ElectionController extends Controller
     public function index()
     {
         //
-        $elections = Election::paginate(25);;
+        $elections = Election::paginate(25);
         return view('admin.elections.index', compact('elections'));
     }
 
