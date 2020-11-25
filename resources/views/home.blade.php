@@ -41,7 +41,7 @@
                                                     <input type="hidden" name="singer" id="singer" value="{{ $singer->id }}">
 
 
-                                                    @if (!!$election->ip_already_voted && $mostrar)
+                                                    @if (!!$election->ip_already_voted)
                                                         <span>Voce já participou dessa votação</span>
                                                     @else
                                                         <button class="btn btn-sm btn-success ml-2">Votar</button>

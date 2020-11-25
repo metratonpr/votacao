@@ -154,6 +154,9 @@ class ElectionController extends Controller
         if (!isset($data['votes'])) {
             $data['votes'] = 0;
         }
+
+        $votesTotal = Vote::where("election_id", '=', $id)->count();
+        $data['votes']  = $votesTotal;
         $election->update($data);
         $election->singers()->sync($data['singers']);
         flash('Votação Atualizada com Sucesso!')->success();

@@ -59,26 +59,33 @@ class HomeController extends Controller
         // Validação se já votou
         $alreadyVoted = Vote::where('election_id', $election->id)->where('ip', $clientIp)->where('computerName', $clientIp)->exists();
 
+
         if (isset($election) && isset($singer) && $election->isOpen && !$alreadyVoted) {
+
+
+
             $electionName = $election->name;
             $electionId = $election->id;
             $singerId = $singer->id;
             $data['computerName'] = $computerName;
+
+            
 
             $now = new DateTime();
             $now = $now->getTimestamp();
 
             $inicio = strtotime($election->starts_in);
 
-            $fim = strtotime($election->ends_in);
+            $fim = date('Y-m-d H:i:s', strtotime($election->ends_in. ' +1 day'));
 
-            $dat = [$inicio, $fim, $now];
+            $fim = strtotime($fim);
 
             $vote = Vote::where([['computerName', '=', $data['computerName']], ["election_id", '=', $electionId]])->first();
 
             $ips = Vote::where([['ip', '=', $clientIp], ["election_id", '=', $electionId]])->count();
 
             if (!isset($vote) && $now >= $inicio && $now <= $fim && $ips < 5) {
+
                 $vote = new Vote();
                 $vote->election_id = $electionId;
                 $vote->singer_id = $singerId;
