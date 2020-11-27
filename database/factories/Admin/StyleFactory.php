@@ -1,18 +1,18 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Admin;
 
-use App\Models\Vote;
+use App\Models\Admin\Style;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class VoteFactory extends Factory
+class StyleFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Vote::class;
+    protected $model = Style::class;
 
     /**
      * Define the model's default state.

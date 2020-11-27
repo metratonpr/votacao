@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\Admin\ElectionController;
 use App\Http\Controllers\Admin\SingerController;
+use App\Http\Controllers\Admin\StyleController;
+use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\VoteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Sandbox;
-use App\Models\Election;
-use App\Models\Vote;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +33,8 @@ Route::get('/obrigado', [HomeController::class, 'obrigado'])->name('obrigado');
 Route::resource('singers', SingerController::class)->middleware('auth');
 Route::resource('elections', ElectionController::class)->middleware('auth');
 Route::resource('votes', VoteController::class)->middleware('auth');
+Route::resource('styles', StyleController::class)->middleware('auth');
+Route::resource('subscriptions', SubscriptionController::class)->middleware('auth');
 
 Route::resource('sandbox', Sandbox::class);
 

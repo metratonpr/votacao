@@ -47,6 +47,12 @@
                             <li class="nav-item @if(request()->is('/votes*')) active @endif">
                                 <a class="nav-link" href="{{route('votes.index')}}">Votos Registrados</a>
                             </li>
+                            <li class="nav-item @if(request()->is('/styles*')) active @endif">
+                                <a class="nav-link" href="{{route('styles.index')}}">Estilos Musicais</a>
+                            </li>
+                            <li class="nav-item @if(request()->is('/subscriptions*')) active @endif">
+                                <a class="nav-link" href="{{route('subscriptions.index')}}">Inscrições</a>
+                            </li>
                             @endauth
                         </ul>
 

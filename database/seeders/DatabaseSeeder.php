@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
 
         #$this->call(SingerSeed::class);
         $this->call(UserSeeder::class);
+        $this->call(StyleSeeder::class);
         #$this->call(ElectionLogSeeder::class);
         #$this->call(ElectionOptionsSeeder::class);
 
