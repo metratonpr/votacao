@@ -16,9 +16,9 @@ class CreateStylesSubscriptionsTable extends Migration
         Schema::create('style_subscription', function (Blueprint $table) {
 
             $table->unsignedBigInteger('style_id');
-            $table->foreign('style_id')->references('id')->on('styles')->onDelete('cascade');
+            $table->foreign('style_id')->references('id')->on('styles');
             $table->unsignedBigInteger('subscription_id');
-            $table->foreign('subscription_id')->references('id')->on('subscriptions');
+            $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
 
 
         });

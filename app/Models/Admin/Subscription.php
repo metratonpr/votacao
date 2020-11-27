@@ -32,4 +32,19 @@ class Subscription extends Model
     {
         return 'slug';
     }
+
+    protected $fillable = ['name',
+    'address',
+    'email',
+    'phoneNumber',
+    'city',
+    'state',
+    'video'];
+
+    public function styles(){
+        return $this->belongsToMany(Style::class);
+    }
+
+
+
 }

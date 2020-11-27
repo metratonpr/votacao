@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\SubscriptionEditRequest;
 use App\Http\Requests\Admin\SubscriptionRequest;
 use App\Models\Admin\Style;
 use App\Models\Admin\Subscription;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class SubscriptionController extends Controller
 {
@@ -28,7 +30,7 @@ class SubscriptionController extends Controller
     public function create()
     {
         $styles = Style::all();
-        return view('admin.subscriptions.create');
+        return view('admin.subscriptions.create',compact(['styles']));
     }
 
     /**
@@ -45,8 +47,9 @@ class SubscriptionController extends Controller
             $data['video'] = $file->store('video','public');
         }
         $subscription = Subscription::create($data);
+        $subscription->styles()->sync($data['styles']);
         flash('Inscrição Realizada com Sucesso!')->success();
-	    return redirect()->route('home');
+	    return redirect()->route('subscriptions.index');
     }
 
     /**
@@ -68,9 +71,9 @@ class SubscriptionController extends Controller
      */
     public function edit($id)
     {
-        $singer = Subscription::find($id);
+        $subscription = Subscription::find($id);
         $styles = Style::all();
-        return view('admin.singers.edit',compact(['singer','styles']));
+        return view('admin.subscriptions.edit',compact(['subscription','styles']));
     }
 
     /**
@@ -80,16 +83,22 @@ class SubscriptionController extends Controller
      * @param  \App\Models\Admin\Subscription  $subscription
      * @return \Illuminate\Http\Response
      */
-    public function update(SubscriptionRequest $request, $id)
+    public function update(SubscriptionEditRequest $request, $id)
     {
         $data = $request->all();
-        if($request->hasFile('video') && $request->file('video')->isValid()){
-             $file = $request->file('video');
-             $data['video'] = $file->store('video','public');
+        $subscription = Subscription::find($id);
+
+        if ($request->hasFile('video')) {
+            if (Storage::disk('public')->exists($subscription->video)) {
+                Storage::disk('public')->delete($subscription->video);
+            }
+            $file = $request->file('video');
+            $data['video'] = $file->store('video', 'public');
         }
-        $subscription = Subscription::create($data);
-        flash('Inscrição Realizada com Sucesso!')->success();
-	    return redirect()->route('home');
+        $subscription->update($data);
+        $subscription->styles()->sync($data['styles']);
+        flash('Inscrição Atualizada com Sucesso!')->success();
+        return redirect()->route('subscriptions.index');
     }
 
     /**
@@ -98,8 +107,19 @@ class SubscriptionController extends Controller
      * @param  \App\Models\Admin\Subscription  $subscription
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Subscription $subscription)
+    public function destroy($id)
     {
-        //
+        $subscription = subscription::find($id);
+
+        if (isset($subscription)) {
+            $video = $subscription->video;
+            if (Storage::disk('public')->exists($video)) {
+                Storage::disk('public')->delete($video);
+            }
+            $subscription->delete();
+        }
+
+        flash('Inscrição Removida com Sucesso com Sucesso!')->success();
+        return redirect()->route('subscriptions.index');
     }
 }

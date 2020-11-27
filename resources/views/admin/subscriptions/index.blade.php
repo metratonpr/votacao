@@ -3,7 +3,7 @@
 @section('content')
 
     <div style="margin: 5px">
-    <a href="{{route('subscriptions.create')}} " class="btn btn-sm btn-success">Novo Estilo</a>
+    <a href="{{route('subscriptions.create')}} " class="btn btn-sm btn-success">Nova Inscrição</a>
     </div>
 
     @isset($subscriptions)
@@ -22,7 +22,7 @@
                 <tr>
                     <td>{{$c->id}}</td>
                     <td>{{$c->name}}</td>
-                    <td>{{$c->phone}}</td>
+                    <td>{{$c->phoneNumber}}</td>
                     <td>{{$c->city}}</td>
                     <td>{{$c->state}}</td>
                     <td>

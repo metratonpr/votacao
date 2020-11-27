@@ -13,7 +13,7 @@ class SubscriptionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,10 +26,12 @@ class SubscriptionRequest extends FormRequest
         return [
             'name' => 'required|min:2|max:240',
             'address' => 'required|min:2|max:240',
-            'phoneNumber' => 'required|min:2|max:10',
+            'email' => 'required|min:2|max:240|email',
+            'phoneNumber' => 'required|min:2|max:20',
             'city' => 'required|min:2|max:240',
-            'state' => 'required|min:2|max:2',
-            'video' => 'required',
+            'state' => 'required|min:2|max:50',
+            'video' => 'required|file|max:30721',
+            'styles' => 'required',
         ];
     }
 

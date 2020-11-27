@@ -17,10 +17,12 @@ class CreateSubscriptionsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('address');
+            $table->string('email');
             $table->string('phoneNumber');
             $table->string('city');
             $table->string('state');
             $table->string('video');
+            $table->string('slug');
             $table->timestamps();
         });
     }
