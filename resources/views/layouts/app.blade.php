@@ -37,6 +37,9 @@
                             <li class="nav-item @if(request()->is('/')) active @endif">
                                 <a class="nav-link" href="{{route('home')}}">Home</a>
                             </li>
+                            <li class="nav-item @if(request()->is('/')) active @endif">
+                                <a class="nav-link" href="{{route('subscriptionspage.index')}}">Inscrições Abertas!</a>
+                            </li>
                             @auth
                             <li class="nav-item @if(request()->is('/singers*')) active @endif">
                                 <a class="nav-link" href="{{route('singers.index')}}">Artistas</a>

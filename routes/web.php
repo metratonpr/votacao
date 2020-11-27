@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\VoteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Sandbox;
+use App\Http\Controllers\SubscriptionPageController;
+use App\Models\Admin\Subscription;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -35,7 +37,8 @@ Route::resource('elections', ElectionController::class)->middleware('auth');
 Route::resource('votes', VoteController::class)->middleware('auth');
 Route::resource('styles', StyleController::class)->middleware('auth');
 Route::resource('subscriptions', SubscriptionController::class)->middleware('auth');
+Route::resource('subscriptionspage', SubscriptionPageController::class);
 
-Route::resource('sandbox', Sandbox::class);
+
 
 
