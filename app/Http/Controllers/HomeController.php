@@ -69,7 +69,7 @@ class HomeController extends Controller
             $singerId = $singer->id;
             $data['computerName'] = $computerName;
 
-            
+
 
             $now = new DateTime();
             $now = $now->getTimestamp();
@@ -98,7 +98,8 @@ class HomeController extends Controller
             }
         }
 
-        return redirect()->route('obrigado');
+        flash('Obrigado por votar!')->success();
+        return redirect()->route('home');
     }
 
     public function possuiCokie($electionName)
